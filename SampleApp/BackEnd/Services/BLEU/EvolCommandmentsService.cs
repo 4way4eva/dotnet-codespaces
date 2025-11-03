@@ -11,7 +11,7 @@ namespace BackEnd.Services.BLEU;
 public class EvolCommandmentsService
 {
     private readonly EvolCommandmentsSystem _system;
-    private static readonly double Pi4 = 97.409091034; // π⁴ constant
+    private static readonly double Pi4 = Math.Pow(Math.PI, 4); // π⁴ constant
 
     public EvolCommandmentsService()
     {
@@ -285,7 +285,7 @@ public class EvolCommandmentsService
             Location = request.Location,
             Witnesses = request.Witnesses,
             IsValid = true,
-            SignatureHash = GenerateSignatureHash(gestureId, commandment.CovenantKey)
+            SignatureHash = GenerateSignatureHash(gestureId, commandment.CovenantKey, request.ExecutedBy, request.Seal, request.Location, request.Witnesses)
         };
 
         _system.Gestures.Add(gesture);
@@ -373,9 +373,11 @@ public class EvolCommandmentsService
     /// <summary>
     /// Generate signature hash for proof-of-authority
     /// </summary>
-    private string GenerateSignatureHash(string gestureId, string covenantKey)
+    private string GenerateSignatureHash(string gestureId, string covenantKey, string executedBy, ElementalSeal seal, string location, string[] witnesses)
     {
-        var combined = $"{gestureId}:{covenantKey}:{DateTime.UtcNow.Ticks}";
+        var timestamp = DateTime.UtcNow;
+        var witnessesStr = string.Join(",", witnesses);
+        var combined = $"{gestureId}:{covenantKey}:{executedBy}:{seal}:{location}:{witnessesStr}:{timestamp:O}";
         var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(combined));
         return Convert.ToHexString(bytes).ToLower();
     }
