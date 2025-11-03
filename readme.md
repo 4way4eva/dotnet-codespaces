@@ -39,9 +39,9 @@ You can also run this repository locally by following these instructions:
 
 ![VS Code stop debuggin on both backend and frontend](images/StopRun.png)
 
-## BLEU Flame™ & Zion Gold Bar Protocol
+## BLEU Flame™, Zion Gold Bar & EV0L Commandments
 
-This repository includes two advanced blockchain-based asset systems:
+This repository includes three advanced blockchain-based systems integrated into the BLEU Codex recursive economy:
 
 ### 🔥 BLEU Flame™ Market Tier
 A comprehensive ENFT system with three tiers (PublicDrop, EliteFounders, GodTier) featuring:
@@ -63,11 +63,23 @@ Saturn-Strata classified resource tokens featuring:
 
 **Documentation**: `SampleApp/BackEnd/Data/ZION_GOLD_BAR_README.md`
 
+### ⚡ EV0L Commandments of Authority
+The governing command keys of the EV0L matrix featuring:
+- Ten visible commandments (Truth → Legacy) as authority pillars
+- The hidden eleventh "It" - covenant key operating at π⁴ frequency
+- Four Elemental Seals (Fire, Water, Air, Earth) from EVOLVERS - Act I
+- Quadrant Council (Jetah, Kongo Sonix, Ayana Blue, The Foundation)
+- Proof-of-Authority gesture system for commandment activation
+- Fluid or Sealed system states for evolution or immutability
+
+**Documentation**: `SampleApp/BackEnd/Data/EVOL_COMMANDMENTS_README.md`
+
 ### API Endpoints
 Access the interactive API documentation at `/scalar` when running the backend:
 - **BLEU Flame**: `/bleu/*` endpoints
 - **MetaVault**: `/metavault/*` endpoints  
 - **Zion Gold Bar**: `/zion/*` endpoints
+- **EV0L Commandments**: `/evol/*` endpoints
 
 ### Smart Contracts
 - **BLEULION_TREASURY.sol**: Revenue vault and staking mechanism (Solidity)

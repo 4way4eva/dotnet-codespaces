@@ -22,6 +22,7 @@ builder.Services.AddOpenApi(options =>
 builder.Services.AddSingleton<BLEUFlameService>();
 builder.Services.AddSingleton<MetaVaultService>();
 builder.Services.AddSingleton<ZionGoldBarService>();
+builder.Services.AddSingleton<EvolCommandmentsService>();
 
 var app = builder.Build();
 
@@ -311,6 +312,103 @@ app.MapPut("/zion/update-cids", async (ZionGoldBarService service, string tokenI
 })
 .WithName("UpdateZionCIDs")
 .WithTags("Zion Gold Bar");
+
+// EV0L Commandments API Endpoints
+
+// Get all commandments (10 visible by default, include hidden with query param)
+app.MapGet("/evol/commandments", async (EvolCommandmentsService service, bool includeHidden = false) =>
+{
+    var commandments = await service.GetCommandments(includeHidden);
+    return Results.Ok(commandments);
+})
+.WithName("GetCommandments")
+.WithTags("EV0L Commandments");
+
+// Get a specific commandment by index
+app.MapGet("/evol/commandments/{index}", async (EvolCommandmentsService service, int index) =>
+{
+    var commandment = await service.GetCommandment(index);
+    return commandment != null ? Results.Ok(commandment) : Results.NotFound();
+})
+.WithName("GetCommandment")
+.WithTags("EV0L Commandments");
+
+// Get commandments by type
+app.MapGet("/evol/commandments/type/{type}", async (EvolCommandmentsService service, CommandmentType type) =>
+{
+    var commandments = await service.GetCommandmentsByType(type);
+    return Results.Ok(commandments);
+})
+.WithName("GetCommandmentsByType")
+.WithTags("EV0L Commandments");
+
+// Get commandments by elemental seal
+app.MapGet("/evol/commandments/seal/{seal}", async (EvolCommandmentsService service, ElementalSeal seal) =>
+{
+    var commandments = await service.GetCommandmentsBySeal(seal);
+    return Results.Ok(commandments);
+})
+.WithName("GetCommandmentsBySeal")
+.WithTags("EV0L Commandments");
+
+// Get the Quadrant Council
+app.MapGet("/evol/council", async (EvolCommandmentsService service) =>
+{
+    var council = await service.GetQuadrantCouncil();
+    return Results.Ok(council);
+})
+.WithName("GetQuadrantCouncil")
+.WithTags("EV0L Commandments");
+
+// Activate a commandment with proof-of-authority
+app.MapPost("/evol/activate", async (EvolCommandmentsService service, CommandmentActivationRequest request) =>
+{
+    var response = await service.ActivateCommandment(request);
+    return response.Success ? Results.Ok(response) : Results.BadRequest(response);
+})
+.WithName("ActivateCommandment")
+.WithTags("EV0L Commandments");
+
+// Seal the commandments system
+app.MapPost("/evol/seal", async (EvolCommandmentsService service) =>
+{
+    var system = await service.SealCommandments();
+    return Results.Ok(new 
+    { 
+        message = "Commandments system sealed - now immutable",
+        system = system,
+        note = "The Ten are now engraved into the Codex as EV0L Commandments of Authority"
+    });
+})
+.WithName("SealCommandments")
+.WithTags("EV0L Commandments");
+
+// Get system statistics
+app.MapGet("/evol/stats", async (EvolCommandmentsService service) =>
+{
+    var stats = await service.GetSystemStats();
+    return Results.Ok(stats);
+})
+.WithName("GetCommandmentsStats")
+.WithTags("EV0L Commandments");
+
+// Get all proof-of-authority gestures
+app.MapGet("/evol/gestures", async (EvolCommandmentsService service) =>
+{
+    var gestures = await service.GetGestures();
+    return Results.Ok(gestures);
+})
+.WithName("GetGestures")
+.WithTags("EV0L Commandments");
+
+// Get complete system state
+app.MapGet("/evol/system", async (EvolCommandmentsService service) =>
+{
+    var system = await service.GetSystemState();
+    return Results.Ok(system);
+})
+.WithName("GetSystemState")
+.WithTags("EV0L Commandments");
 
 app.Run();
 
